@@ -4,7 +4,7 @@ import zmq
 def main():
 	context= zmq.Context()
 
-
+	print "Loading forwarder device"
  	try:
  		#create front end SUB socket for the forwarder coming from PUBLISHER
 		fe = context.socket(zmq.SUB)
@@ -13,10 +13,10 @@ def main():
 
 		#create backend PUB socket for the forwarder coming from SUBSCRIBER
 		be = context.socket(zmq.PUB)
-		backend.bind("tcp://*:5560")
+		be.bind("tcp://*:5560")
 
-		zmq.device(zmq.FORWARDER, frontend, backend)
-		
+		zmq.device(zmq.FORWARDER, fe, be)
+
 	except Exception, e:
 		print e
 		print "Destroying ZMQ forwarder forwarder device."
@@ -26,6 +26,6 @@ def main():
 		be.close()
 		context.term()
 
-if __name__ == "__main__"
+if __name__ == "__main__":
 	main()
 
